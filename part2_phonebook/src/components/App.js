@@ -21,6 +21,15 @@ const Notification = ({ message }) => {
   }
 }
 
+const MainTitle = ({titleColor}) => {
+  const titleStyle = {
+    color: titleColor,
+  }
+  return(
+    <h1 style={titleStyle}>Phonebook</h1>
+  )
+}
+
 const FilterComp = ({filter,handleFilterChange}) => {
 
   return(
@@ -76,6 +85,7 @@ const NewNameComp = ({addName,newName,handleNameChange,newNumber,handleNumberCha
 }
 
 const App = () => {
+  const [ titleColor, setTitleColor ] = useState('green')
   const [ persons, setPersons ] = useState([
     { name: 'Arto Hellas',
       number: '112233' }
@@ -90,6 +100,12 @@ const App = () => {
   }
   const [ message, setMessage] = useState(iniMessage)
 
+  setTimeout(() => {
+    if (titleColor==='green'){setTitleColor('red')}
+    else if (titleColor==='red'){setTitleColor('green')}
+  }, 500);
+
+    
   useEffect(() => {
     console.log('effect')
     personService
@@ -182,7 +198,9 @@ const App = () => {
 
   return (
     <div>
-      <h1>Phonebook</h1>
+      <MainTitle
+        titleColor={titleColor}
+      />
       <Notification message={message} />
         <p>Filter by name</p>
         <FilterComp

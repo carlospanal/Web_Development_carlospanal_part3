@@ -1,5 +1,6 @@
-run backend:
-npm run dev
+backend URL:
+http://powerful-hamlet-67777.herokuapp.com
 
 run frontend:
 npm start
+
