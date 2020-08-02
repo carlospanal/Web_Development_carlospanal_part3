@@ -1,6 +1,6 @@
 import axios from 'axios'
 //const baseUrl = 'http://localhost:3001/api/persons'
-const baseUrl = 'http://powerful-hamlet-67777.herokuapp.com/api/persons'
+const baseUrl = '/api/persons'
 
 
 const create = newObject => {
