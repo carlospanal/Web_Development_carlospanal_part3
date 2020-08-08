@@ -4,6 +4,7 @@ const baseUrl = '/api/persons'
 
 
 const create = newObject => {
+    console.log('personsjs')
     const request = axios.post(baseUrl, newObject)
     return request.then(response => response.data)
 }

@@ -24,6 +24,8 @@ const Notification = ({ message }) => {
 const MainTitle = ({titleColor}) => {
   const titleStyle = {
     color: titleColor,
+    
+    
   }
   return(
     <h1 style={titleStyle}>Phonebook</h1>
@@ -85,7 +87,7 @@ const NewNameComp = ({addName,newName,handleNameChange,newNumber,handleNumberCha
 }
 
 const App = () => {
-  const [ titleColor, setTitleColor ] = useState('green')
+  const [ titleColor, setTitleColor ] = useState('rgb(0,255,0')
   const [ persons, setPersons ] = useState([
     { name: 'Arto Hellas',
       number: '112233' }
@@ -94,6 +96,8 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
   const [ filteredPersons, setFilteredPersons ] = useState(persons)
+  const [ titleCounter, setTitleCounter ] = useState(1)
+  const [ titleCUp, setTitleCUp ] = useState(true)
   const iniMessage={
     content:"Page loaded successfully",
     mType: "success"
@@ -101,9 +105,22 @@ const App = () => {
   const [ message, setMessage] = useState(iniMessage)
 
   setTimeout(() => {
-    if (titleColor==='green'){setTitleColor('red')}
-    else if (titleColor==='red'){setTitleColor('green')}
-  }, 500);
+    if (titleCounter===255){
+      setTitleCUp(false)}
+    if (titleCounter===0){
+      setTitleCUp(true)}
+    if (titleCUp===true){
+      if(titleCounter+10>=255){setTitleCounter(255)}
+      else{setTitleCounter(titleCounter+10)}
+    }
+    else{
+      if(titleCounter-10<=0){setTitleCounter(0)}
+      else{setTitleCounter(titleCounter-10)}
+    }
+
+    setTitleColor(`rgb(${titleCounter},${255-titleCounter},0)`)
+
+  }, 50);
 
     
   useEffect(() => {
@@ -116,7 +133,7 @@ const App = () => {
         setFilteredPersons(response)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
+ // console.log('render', persons.length, 'persons')
 
   const tempMessage = (tmessage,mstime)=>{
     setMessage(tmessage)
@@ -129,7 +146,7 @@ const App = () => {
       setPersons(persons.concat(nameObject))
       setNewName('')
       setFilteredPersons(filteredPersons.concat(nameObject)) 
-
+      
       personService
       .create(nameObject)
       .then(response => {
@@ -139,6 +156,16 @@ const App = () => {
           mType: "success"
           } 
           ,5000)
+        })
+      .catch(error => {
+        if (true){
+      //  if (error.response.statusCode === 400){
+          console.log(error.response)
+          tempMessage({
+            content:`${error.response.data.error}`,
+            mType: "error"
+          } ,5000)
+        }
       })
     
     }
@@ -157,15 +184,17 @@ const App = () => {
               }
               ,5000)
             })
-            .catch(() => {
-              tempMessage({
-                content:`This person: '${nameObject.name}', was already removed from server`,
-                mType: "error"
-                } 
-                ,5000)
+            .catch(error => {
+             
+                tempMessage({
+                  content:`This person: '${nameObject.name}', was already removed from server`,
+                  mType: "error"
+                } ,5000)
               setPersons(persons.filter(person => person.name !== nameObject.name))
               console.log(persons.filter(person => person.id !== nameObject.id))
               setFilteredPersons(filteredPersons.filter(person => person.name !== nameObject.name))
+              
+              
             })
 
         }
@@ -173,6 +202,7 @@ const App = () => {
   }
 
   const addName = (event) => {
+    console.log("eee")
     event.preventDefault()
     const nameObject = {
       name: newName,
