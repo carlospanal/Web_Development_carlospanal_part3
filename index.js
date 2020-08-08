@@ -68,6 +68,15 @@ app.use(morgan(
     })
     .catch(error =>  next(error))
   })
+ 
+  app.delete('/api/persons/:id', (request, response, next) => {
+    console.log(request.params.id)
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error =>  next(error))
+})
 
   app.post('/api/persons', (request, response, next) => {
    
@@ -85,7 +94,6 @@ app.use(morgan(
       number: body.number
     })
     console.log(person)
-
     person.save().
       then(result => {
 
